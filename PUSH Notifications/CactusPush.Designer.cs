@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CactusPush));
             this.Timer = new System.Windows.Forms.Timer(this.components);
             this.cactusGradienPanels1 = new PUSH_Notifications.CactusGradienPanels();
             this.MessageLabel = new System.Windows.Forms.Label();
@@ -67,7 +66,6 @@
             this.MessageLabel.Padding = new System.Windows.Forms.Padding(5);
             this.MessageLabel.Size = new System.Drawing.Size(245, 90);
             this.MessageLabel.TabIndex = 1;
-            this.MessageLabel.Text = "ывавыавыаыываымммммммммммвавыаываываываываваываываываываваываываываываываываыва";
             this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.MessageLabel.Click += new System.EventHandler(this.MessageLabel_Click);
             // 
@@ -75,7 +73,6 @@
             // 
             this.IconBox.BackColor = System.Drawing.Color.Transparent;
             this.IconBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.IconBox.Image = ((System.Drawing.Image)(resources.GetObject("IconBox.Image")));
             this.IconBox.Location = new System.Drawing.Point(0, 0);
             this.IconBox.Name = "IconBox";
             this.IconBox.Size = new System.Drawing.Size(105, 90);

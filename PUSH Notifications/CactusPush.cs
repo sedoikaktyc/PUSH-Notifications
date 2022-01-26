@@ -125,7 +125,7 @@ namespace PUSH_Notifications
                             break;
                         case Type.Window:
 
-                            MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                            MessageLabel.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 
                             StartX = formParent.Location.X + formParent.Width / 2 - Width / 2;
                             StartY = formParent.Location.Y;
@@ -173,7 +173,7 @@ namespace PUSH_Notifications
 
 
             MessageLabel.Text = message;
-
+            this.TopMost = true;
             Show();
             _action = Action.Animate;
             Timer.Start();
