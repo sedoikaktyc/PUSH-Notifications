@@ -25,6 +25,8 @@ namespace PUSH_Notifications
         public FormClose formClose;
         private bool _closeDeligate { get; set; }
         Type typeForTimer;
+        int TymerPrepInt = 1;
+        bool isCloseDisable = false;
 
         public class Gradient
         {
@@ -34,13 +36,14 @@ namespace PUSH_Notifications
 
         }
 
-
         private void addGradients()
         {
-            Gradients.Add(new Gradient() { Name = "error", _left = Color.FromArgb(255, 254, 96, 98), _right = Color.FromArgb(255, 255, 154, 100) });
-            Gradients.Add(new Gradient() { Name = "alert", _left = Color.FromArgb(255, 252, 0, 0), _right = Color.FromArgb(255, 33, 0, 0) });
-            Gradients.Add(new Gradient() { Name = "success", _left = Color.FromArgb(100, 3, 155, 225), _right = Color.FromArgb(255, 100, 240, 174) });
-            Gradients.Add(new Gradient() { Name = "info", _left = Color.FromArgb(100, 92, 12, 228), _right = Color.FromArgb(255, 240, 139, 177) });
+            Gradients.Add(new Gradient() { Name = "error", _left = Color.FromArgb(255, 92, 12, 228), _right = Color.FromArgb(255, 252, 0, 0) }); 
+            Gradients.Add(new Gradient() { Name = "alert", _left = Color.FromArgb(255, 92, 12, 228), _right = Color.FromArgb(255, 255, 154, 100) });
+            Gradients.Add(new Gradient() { Name = "success", _left = Color.FromArgb(255, 92, 12, 228), _right = Color.FromArgb(255, 100, 240, 174) });
+            Gradients.Add(new Gradient() { Name = "info", _left = Color.FromArgb(255, 92, 12, 228), _right = Color.FromArgb(255, 255, 197, 0) });
+            Gradients.Add(new Gradient() { Name = "successWindow", _left = Color.FromArgb(255, 17, 153, 142), _right = Color.FromArgb(255, 29, 151, 108) });
+            Gradients.Add(new Gradient() { Name = "errorWindow", _left = Color.FromArgb(255, 237, 33, 58), _right = Color.FromArgb(255, 147, 41, 30) });
         }
 
         public CactusPush()
@@ -50,8 +53,6 @@ namespace PUSH_Notifications
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             DoubleBuffered = true;
             
-
-
         }
 
         public enum Сategory
@@ -76,9 +77,20 @@ namespace PUSH_Notifications
             Close
         }
 
-        public void ShowMessage(string message, Сategory category, Type type = Type.System, Form formParent = null, bool closeDeligate = false)
-        {
+        private void setTimeIntervalPrep(int interval) {
+            if (interval > 0)
+            {
+                TymerPrepInt = interval;
+            }
+            else {
+                isCloseDisable = true;
+            }
+            
+        }
 
+        public void ShowMessage(string message, Сategory category, int time = -1, Type type = Type.System, Form formParent = null, bool closeDeligate = false)
+        {
+            setTimeIntervalPrep(time);
             typeForTimer = type;
             string newFormName = "";
             _closeDeligate = closeDeligate;
@@ -119,9 +131,10 @@ namespace PUSH_Notifications
                     {
                         case Type.System:
 
-                            StartX = Screen.PrimaryScreen.WorkingArea.Width - Width + 15;
+                            StartX = Screen.PrimaryScreen.WorkingArea.Width - Width + 100 + 150;
                             StartY = Screen.PrimaryScreen.WorkingArea.Height - Height * i - 5 * i;
                             Location = new Point(StartX, StartY);
+                            StartX = Screen.PrimaryScreen.WorkingArea.Width - Width  -5;
                             break;
                         case Type.Window:
 
@@ -151,13 +164,33 @@ namespace PUSH_Notifications
             {
                 case Сategory.Success:
                     this.IconBox.Image = Resources.ok;
-                    cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "success")._left;
-                    cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "success")._right;
+                    switch (type)
+                    {
+                        case Type.System:
+                            cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "success")._left;
+                            cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "success")._right;
+                            break;
+
+                        case Type.Window:
+                            cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "successWindow")._left;
+                            cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "successWindow")._right;
+                            break;
+                    }                
                     break;
-                case Сategory.Error:
+                case Сategory.Error: 
                     this.IconBox.Image = Resources.error;
-                    cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "error")._left;
-                    cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "error")._right;
+                    switch (type)
+                    {
+                        case Type.System:
+                            cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "error")._left;
+                            cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "error")._right;
+                            break;
+
+                        case Type.Window:
+                            cactusGradienPanels1.ColorLeft = Gradients.Find(item => item.Name == "errorWindow")._left;
+                            cactusGradienPanels1.ColorRight = Gradients.Find(item => item.Name == "errorWindow")._right;
+                            break;
+                    }
                     break;
                 case Сategory.Info:
                     this.IconBox.Image = Resources.refresh;
@@ -193,7 +226,7 @@ namespace PUSH_Notifications
 
                             if (StartX < Location.X)
                             {
-                                Left -= 2;
+                                Left -= 15;
                             }
                             else
                             {
@@ -202,8 +235,6 @@ namespace PUSH_Notifications
                                     _action = Action.Prep;
                                 }
                             }
-
-
                             break;
 
                         case Type.Window:
@@ -219,15 +250,20 @@ namespace PUSH_Notifications
                                     _action = Action.Prep;
                                 }
                             }
-
-
                             break;
 
                     }
 
                     break;
                 case Action.Prep:
-                    Timer.Interval = 5000;
+                    if (isCloseDisable)
+                    {
+                        Timer.Stop();
+                    }
+                    else {
+                        Timer.Interval = TymerPrepInt;
+                    }
+                                        
                     _action = Action.Close;
                     break;
                 case Action.Close:
@@ -244,8 +280,6 @@ namespace PUSH_Notifications
                             Top -= 3;
                             break;
                     }
-
-
 
                     if (Opacity == 0.0)
                     {
@@ -274,7 +308,9 @@ namespace PUSH_Notifications
         private void CloseNow()
         {
             Timer.Interval = 1;
+           
             _action = Action.Close;
+            Timer.Start();
         }
 
         private void IconBox_Click(object sender, EventArgs e)

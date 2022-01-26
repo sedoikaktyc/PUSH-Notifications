@@ -34,7 +34,7 @@ namespace PUSH_Notifications
         {
             CactusPush frm = new CactusPush();
             frm.formClose = Hello;
-            frm.ShowMessage(message, Сategory, Type, this, isCallBack);
+            frm.ShowMessage(message, Сategory, 500, Type, this, isCallBack);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -61,6 +61,11 @@ namespace PUSH_Notifications
         {
             Push("Success Alert", CactusPush.Сategory.Info);
             
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Notifications("Success Alert Success Alert Success Alert", CactusPush.Сategory.Error, CactusPush.Type.Window, true);
         }
     }
 }
